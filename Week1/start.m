@@ -109,7 +109,7 @@ I_ch3 = I(:,:,3);
 %TO COMPLETE 1
 %mask_img(i,j) == 1 means we have lost information in that pixel
 %mask(i,j) == 0 means we have information in that pixel
-mask = I_ch1 > 0.7 & I_ch2 == 0 & I_ch3 == 0; 
+mask = I_ch2 == 0 & I_ch3 == 0; 
 % The mask is filtering the reds in the image. As is a dark red the chanels
 % 2 and 3 should be 0 that are the ones related with green and blue respectively
 
