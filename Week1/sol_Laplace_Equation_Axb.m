@@ -124,13 +124,13 @@ for j=2:nj+1
             %vector b
             %TO COMPLETE 5 
             
-            %Left Neighbour 
+            %Upper Neighbour 
             idx_Ai(idx) = p;
             idx_Aj(idx) = p-1;
             a_ij(idx) = -1;   
             idx=idx+1;
             
-            %Right Neighbour 
+            %Lower Neighbour 
             idx_Ai(idx) = p;
             idx_Aj(idx) = p+1;
             a_ij(idx) = -1;   
@@ -142,13 +142,13 @@ for j=2:nj+1
             a_ij(idx) = 4;   
             idx=idx+1;
             
-            %Upper Neighbour 
+            %East Neighbour 
             idx_Ai(idx) = p;
             idx_Aj(idx) = p+ni+2;
             a_ij(idx) = -1;   
             idx=idx+1;
             
-            %Below Neighbour 
+            %West Neighbour 
             idx_Ai(idx) = p;
             idx_Aj(idx) = p-ni-2;
             a_ij(idx) = -1;   
