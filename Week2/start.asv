@@ -1,8 +1,8 @@
 clearvars;
 close all;
 
-SRC = 'girl';
-DST = 'lena';
+SRC = 'lena';
+DST = 'girl';
 MODE = 1; %0: importing gradients
           %1: mixing gradients
 
@@ -45,7 +45,7 @@ for nC = 1: nChannels
         
         % Keep a mixture of them according to mask
         mixed_gradients = zeros(size(src(:,:,1)));
-        a = driving_on_dst .* mixed_mask + driving_on_src .* ~mixed_mask;
+        a = driving_on_dst * mixed_mask + driving_on_src * ~mixed_mask;
         mixed_gradients(mask_dst(:)) = a(mask_src(:));
         param.driving = mixed_gradients;
     end
