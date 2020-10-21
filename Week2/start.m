@@ -52,7 +52,7 @@ for nC = 1: nChannels
     dst1(:,:,nC) = G10_Laplace_Equation_Axb(dst(:,:,nC), mask_dst,  param);
 end
 
-
+figure
 subplot(1,5,1);
 imshow(src/256);
 title('Source image');
