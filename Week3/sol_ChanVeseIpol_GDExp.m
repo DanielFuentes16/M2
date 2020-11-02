@@ -1,4 +1,4 @@
-function [ phi ] = sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni, v )
+function [ phi ] = sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni, v, vid )
 %Implementation of the Chan-Vese segmentation following the explicit
 %gradient descent in the paper of Pascal Getreur "Chan-Vese Segmentation".
 %It is the equation 19 from that paper
@@ -12,9 +12,10 @@ function [ phi ] = sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambd
 %tol   : tolerance for the sopping criterium
 % epHeaviside: epsilon for the regularized heaviside. 
 % dt     : time step
-%iterMax : MAximum number of iterations
+%iterMax : Maximum number of iterations
 %reIni   : Iterations for reinitialization. 0 means no reinitializacion
 %v: visualize every v iterations 
+%vid: boolean indicating if a video is saved with the progress
 
 [ni,nj]=size(I);
 hi=1;
@@ -24,6 +25,7 @@ hj=1;
 phi=phi_0;
 dif=inf;
 nIter=0;
+num_frame=0;
 while dif>tol && nIter<iterMax
     
     phi_old=phi;
@@ -120,9 +122,32 @@ while dif>tol && nIter<iterMax
 
             axis off;
             hold off
+        set(gcf,'Position',[100, 100, 1200, 500]);
+        if vid
+            num_frame = num_frame + 1;
+            F(num_frame) = getframe(gcf);
+        end
         drawnow;
         pause(.0001); 
     end
+end
+
+%%Save the video file
+if vid
+    % create the video writer with 1 fps
+    writerObj = VideoWriter('result.avi');
+    writerObj.FrameRate = 10;
+    % set the seconds per image
+    % open the video writer
+    open(writerObj);
+    % write the frames to the video
+    for i=1:length(F)
+        % convert the image to a frame
+        frame = F(i) ;    
+        writeVideo(writerObj, frame);
+    end
+    % close the writer object
+    close(writerObj);
 end
 
 fprintf('Final number of iterations: %i\n', nIter)
