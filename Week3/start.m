@@ -7,8 +7,8 @@ clc
 %I=double(imread('noisedCircles.tif'));
 %I=double(imread('circles.png'));
 %I=double(imread('phantom17.bmp'));
-%I=double(imread('phantom18.bmp'));
-I=double(imread('phantom19.bmp'));
+I=double(imread('phantom18.bmp'));
+%I=double(imread('phantom19.bmp'));
 %I=double(imread('Image_to_Restore.png'));
 I=mean(I,3);
 I=I-min(I(:));
@@ -24,7 +24,7 @@ I=I/max(I(:));
 %phantom17 mu=1, mu=2, mu=10
 %phantom18 mu=0.2 mu=0.5
 %hola carola mu=1
-mu=0.1;
+mu=0.2;
 nu=0;
 
 
@@ -67,7 +67,7 @@ phi_0=phi_0-1;
 %%Explicit Gradient Descent
 
 %Plot every vis iterations 
-vis = 0;
+vis = 100;
 %output as .avi file
 vid = false;
 phi=sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni, vis, vid );

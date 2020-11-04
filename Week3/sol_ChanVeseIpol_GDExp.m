@@ -33,12 +33,17 @@ while dif>tol && nIter<iterMax
     
     
     %Fixed phi, Minimization w.r.t c1 and c2 (constant estimation)
-    H_phi = phi>=0;
-    c1 = sum(sum(I.*H_phi))/sum(sum(H_phi)); %TODO 1: Line to complete
-    c2 = sum(sum(I.*~H_phi))/sum(sum(~H_phi)); %TODO 2: Line to complete
+    H_phi = 0.5*(1+(2/pi.*atan(phi/epHeaviside)));
+    c1 = sum(sum(I.*H_phi))/sum(sum(H_phi)); %TODO 1: Sum of inside pixels / number of pixels
+    c2 = sum(sum(I.*(1-H_phi)))/sum(sum(1-H_phi)); %TODO 2: Sum of outside pixels / number of pixels
     
-    %Boundary conditions
-    % TO DO: For the moment I ingore these conditions
+    %Take H as a cone
+    %H_phi = phi>=0;
+    %c1 = sum(sum(I.*H_phi))/sum(sum(H_phi)); %TODO 1: Sum of inside pixels / number of pixels
+    %c2 = sum(sum(I.*~H_phi))/sum(sum(~H_phi)); %TODO 2: Sum of outside pixels / number of pixels
+    
+    
+    %Boundary conditions: duplicate the pixels near the borders
     phi(1,:)   = phi(2,:); %TODO 3: Line to complete
     phi(end,:) = phi(end-1,:); %TODO 4: Line to complete
 
@@ -69,6 +74,11 @@ while dif>tol && nIter<iterMax
     
     
     %%Equation 22, for inner points
+    % i,j = 2:end-1, 2:end-1
+    % i+1,j = 3:end, 2:end-1
+    % i-1,j = 1:end-2, 2:end-1
+    % i,j+1 = 2:end-1, 3:end
+    % i,j-1 = 2:end-1, 1:end-2
     phi(2:end-1, 2:end-1) = (phi(2:end-1, 2:end-1) + ...
         dt.*delta_phi(2:end-1, 2:end-1) .* ...
         (A(2:end-1, 2:end-1).*phi(3:end, 2:end-1) + ...
