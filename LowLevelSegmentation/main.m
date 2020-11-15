@@ -8,8 +8,8 @@ addpath(genpath(basedir))
 % Input image
 imname = '7_9_s';
 lab = true;
-K = 2;
-smooth_term = [0.0 2.0]; %unused
+K = 3;
+smooth_term = [5 2.5];
 
 im = imread(strcat(imname,'.bmp'));
 im_gt = imread(strcat(imname,'_GT.bmp'));

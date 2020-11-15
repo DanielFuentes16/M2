@@ -46,7 +46,7 @@ for e = 1:edgeStruct.nEdges
    n1 = edgeStruct.edgeEnds(e,1);
    n2 = edgeStruct.edgeEnds(e,2);
 
-   pot_same = exp(5 + 2.5*1/(1+abs(Xstd(n1)-Xstd(n2))));
+   pot_same = exp(lambda(1) + lambda(2)*1/(1+abs(Xstd(n1)-Xstd(n2))));
    edgePot(:,:,e) = (pot_same)*eye(K)+(ones(K)-eye(K));
    %pot_same in the diagonal and 1 elsewhere
 end
