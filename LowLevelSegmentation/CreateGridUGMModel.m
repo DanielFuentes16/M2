@@ -41,6 +41,9 @@ Xstd = UGM_standardizeCols(reshape(im,[1 1 nNodes]),1);
 edgePot = zeros(nStates,nStates,edgeStruct.nEdges);
 
 for e = 1:edgeStruct.nEdges 
+   % Diagonal: probability of 2 adjacent pixels to have the same color
+   % Others: probability of 2 non-adjacent pixels to have the same color
+   
    % Option 1: pot_same in the diagonal and 1 elsewhere
    n1 = edgeStruct.edgeEnds(e,1);
    n2 = edgeStruct.edgeEnds(e,2);
