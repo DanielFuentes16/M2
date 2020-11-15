@@ -1,4 +1,4 @@
-function [edgePot,edgeStruct]=CreateGridUGMModel(NumFils, NumCols, K, lambda)
+function [edgePot,edgeStruct]=CreateGridUGMModel(NumFils, NumCols, K, lambda, im)
 %
 %
 % NumFils, NumCols: image dimension
@@ -31,7 +31,11 @@ adj(sub2ind([nNodes nNodes],ind,ind+NumFils)) = 1;
 % Add Up/Left Edges
 adj = adj+adj';
 
+% Create structure
 edgeStruct = UGM_makeEdgeStruct(adj,nStates);
+
+% Standardize Features
+Xstd = UGM_standardizeCols(reshape(im,[1 1 nNodes]),1);
 
 % adj is a sparse matrix defining the nodes and their connections
 
@@ -39,8 +43,12 @@ edgeStruct = UGM_makeEdgeStruct(adj,nStates);
 edgePot = zeros(nStates,nStates,edgeStruct.nEdges);
 
 for e = 1:edgeStruct.nEdges 
-   edgePot(:,:,e) = 1-lambda.*(eye(nStates));
-   %if they are equal, 1 else 0
+   n1 = edgeStruct.edgeEnds(e,1);
+   n2 = edgeStruct.edgeEnds(e,2);
+
+   pot_same = exp(5 + 2.5*1/(1+abs(Xstd(n1)-Xstd(n2))));
+   edgePot(:,:,e) = (pot_same)*eye(K)+(ones(K)-eye(K));
+   %pot_same in the diagonal and 1 elsewhere
 end
 
 

@@ -33,7 +33,7 @@ while dif>tol && nIter<iterMax
     
     
     %Fixed phi, Minimization w.r.t c1 and c2 (constant estimation)
-    H_phi = 0.5*(1+(2/pi.*atan(phi/epHeaviside)));
+    H_phi = 0.5*(1+(2/pi.*atan(phi/epHeaviside))); % or H_phi = phi>=0
     c1 = sum(sum(I.*H_phi))/sum(sum(H_phi)); %TODO 1: Sum of inside pixels / number of pixels
     c2 = sum(sum(I.*(1-H_phi)))/sum(sum(1-H_phi)); %TODO 2: Sum of outside pixels / number of pixels
     

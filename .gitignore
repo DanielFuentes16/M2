@@ -131,3 +131,7 @@ dmypy.json
 .DS_Store
 
 *.m~
+*.avi
+*.mp4
+*.m4v
+*.asv
