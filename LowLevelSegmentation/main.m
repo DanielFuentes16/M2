@@ -9,7 +9,7 @@ addpath(genpath(basedir))
 imname = '7_9_s';
 lab = true;
 K = 3; % Number of color clusters (=number of states of hidden variables)
-smooth_term = [5 2.5];
+smooth_term = [10 5 2.5]; % L1*(L2+L3*(1/diff)
 
 im = imread(strcat(imname,'.bmp'));
 im_gt = imread(strcat(imname,'_GT.bmp'));
@@ -33,8 +33,7 @@ data_term=gmm_color.posterior(x); % Posterior probabilities
                              % maximum probability for each pixel
 
 %% Estimate Pairwise potentials
-x1 = reshape(rgb2gray(im/255),[nRows*nCols,1]);
-[edgePot, edgeStruct] = CreateGridUGMModel(nRows,nCols,K,smooth_term,x1);
+[edgePot, edgeStruct] = CreateGridUGMModel(nRows,nCols,K,smooth_term,im);
 
 %% Solve using different methods
 % GMM image
@@ -56,7 +55,7 @@ im_bp = reshape(mu_color(decodeLBP,:),size(im));
 im_mf = reshape(mu_color(im_mf,:),size(im)); %Use the color with max prob
 
 % Extra inference algorithms: Chain
-[nodeBelChain, ~, ~] = UGM_Infer_Chain(data_term,edgePot,edgeStruct)
+[nodeBelChain, ~, ~] = UGM_Infer_Chain(data_term,edgePot,edgeStruct);
 [~,im_chain] = max(nodeBelChain,[],2); % Take the index (=color cluster) of the
                                          % maximum probability for each pixel
 im_chain = reshape(mu_color(im_chain,:),size(im)); %Use the color with max prob
