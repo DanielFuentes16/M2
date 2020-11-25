@@ -1,4 +1,4 @@
-function [edgePot,edgeStruct]=CreateGridUGMModel(NumFils, NumCols, K, lambda, im)
+function [edgePot,edgeStruct]=CreateGridUGMModel(NumFils, NumCols, K, lambda, im, lab)
 %
 %
 % NumFils, NumCols: image dimension
@@ -35,10 +35,13 @@ adj = adj+adj';
 edgeStruct = UGM_makeEdgeStruct(adj,nStates);
 
 % Standardize Features
-%Xstd = UGM_standardizeCols(reshape(im,[1 1 nNodes]),1);
-XstdL = UGM_standardizeCols(reshape(im(:,:,1),[1 1 nNodes]),1);
-Xstda = UGM_standardizeCols(reshape(im(:,:,2),[1 1 nNodes]),1);
-Xstdb = UGM_standardizeCols(reshape(im(:,:,3),[1 1 nNodes]),1);
+if lab
+    XstdL = UGM_standardizeCols(reshape(im(:,:,1),[1 1 nNodes]),1);
+    Xstda = UGM_standardizeCols(reshape(im(:,:,2),[1 1 nNodes]),1);
+    Xstdb = UGM_standardizeCols(reshape(im(:,:,3),[1 1 nNodes]),1);
+else
+    Xstd  = UGM_standardizeCols(reshape(rgb2gray(im),[1 1 nNodes]),1);
+end
 
 % Define the pairwise potentials (Potts model)
 edgePot = zeros(nStates,nStates,edgeStruct.nEdges);
@@ -53,13 +56,16 @@ for e = 1:edgeStruct.nEdges
    
    % Option 1A: the squared error for all three components gives a better description
    % of the pixel diff
+   if lab
    pot_same = exp(lambda(1) + lambda(2)*1/(1+sqrt( ...
        (XstdL(n1)-XstdL(n2))^2 + (Xstda(n1)-Xstda(n2))^2 + (Xstdb(n1)-Xstdb(n2))^2)));
    edgePot(:,:,e) = (pot_same)*eye(K)+(ones(K)-eye(K));
    
    % Option 1B: use only one channel
-   %pot_same = lambda(1)*exp(lambda(2) + lambda(3)*1/(1+abs(XstdL(n1)-XstdL(n2))));
-   
+   else
+        pot_same = lambda(1)*exp(lambda(2) + lambda(3)*1/(1+abs(Xstd(n1)-Xstd(n2))));
+        edgePot(:,:,e) = (pot_same)*eye(K)+(ones(K)-eye(K));
+   end
    % Option 2: use directly lambda(1) for the diagonal and lambda(2) for the rest
    %edgePot(:,:,e) = (exp(1+lambda(1)))*eye(K)+(exp(1+lambda(2)))*(ones(K)-eye(K));
    
