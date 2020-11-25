@@ -69,8 +69,8 @@ for e = 1:edgeStruct.nEdges
 end
 
 %Scale diagonals according to colors
-%edgePot(1,1,:) = edgePot(2,2,:).*5;
-%edgePot(2,2,:) = edgePot(2,2,:).*4;
-%edgePot(3,3,:) = edgePot(3,3,:).*10;
+edgePot(1,1,:) = edgePot(1,1,:).*10;
+edgePot(2,2,:) = edgePot(2,2,:).*1;
+edgePot(3,3,:) = edgePot(3,3,:).*10;
 
 toc;
