@@ -51,15 +51,16 @@ for e = 1:edgeStruct.nEdges
    n1 = edgeStruct.edgeEnds(e,1);
    n2 = edgeStruct.edgeEnds(e,2);
    
-   % The squared error for all three components gives a better description
+   % Option 1A: the squared error for all three components gives a better description
    % of the pixel diff
    pot_same = exp(lambda(1) + lambda(2)*1/(1+sqrt( ...
        (XstdL(n1)-XstdL(n2))^2 + (Xstda(n1)-Xstda(n2))^2 + (Xstdb(n1)-Xstdb(n2))^2)));
    edgePot(:,:,e) = (pot_same)*eye(K)+(ones(K)-eye(K));
    
+   % Option 1B: use only one channel
    %pot_same = lambda(1)*exp(lambda(2) + lambda(3)*1/(1+abs(XstdL(n1)-XstdL(n2))));
-   % Option 2: use directly lambda(1) for the diagonal and lambda(2) for
-   % the rest
+   
+   % Option 2: use directly lambda(1) for the diagonal and lambda(2) for the rest
    %edgePot(:,:,e) = (exp(1+lambda(1)))*eye(K)+(exp(1+lambda(2)))*(ones(K)-eye(K));
    
    % Option 3: change manually values (for K=3)
@@ -68,9 +69,9 @@ for e = 1:edgeStruct.nEdges
                       %1     1       4000];
 end
 
-%Scale diagonals according to colors
-edgePot(1,1,:) = edgePot(1,1,:).*10;
-edgePot(2,2,:) = edgePot(2,2,:).*1;
-edgePot(3,3,:) = edgePot(3,3,:).*10;
+% Option 4: scale diagonals according to colors
+%edgePot(1,1,:) = edgePot(1,1,:).*10;
+%edgePot(2,2,:) = edgePot(2,2,:).*1;
+%edgePot(3,3,:) = edgePot(3,3,:).*10;
 
 toc;
