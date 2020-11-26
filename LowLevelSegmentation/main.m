@@ -7,7 +7,7 @@ addpath(genpath(basedir))
 %% Variables
 % Input image
 imname = '7_9_s';
-lab = false;
+lab = true;
 K = 3; % Number of color clusters (=number of states of hidden variables)
 smooth_term = [10 5 2.5]; % L1*(L2+L3*(1/diff)
 
@@ -33,7 +33,8 @@ data_term=gmm_color.posterior(x); % Posterior probabilities
                              % maximum probability for each pixel
 
 %% Estimate Pairwise potentials
-[edgePot, edgeStruct] = CreateGridUGMModel(nRows,nCols,K,smooth_term,im, lab);
+multiple_channels = true;
+[edgePot, edgeStruct] = CreateGridUGMModel(nRows,nCols,K,smooth_term,im, multiple_channels, lab);
 
 %% Solve using different methods
 % GMM image
