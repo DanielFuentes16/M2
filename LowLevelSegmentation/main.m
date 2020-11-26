@@ -12,6 +12,7 @@ K = 3; % Number of color clusters (=number of states of hidden variables)
 smooth_term = [10 5 2.5]; % L1*(L2+L3*(1/diff)
 
 im = imread(strcat(imname,'.bmp'));
+%im = imread(strcat('leaf.png'));
 im_gt = imread(strcat(imname,'_GT.bmp'));
 nRows = size(im,1);
 nCols = size(im,2);
